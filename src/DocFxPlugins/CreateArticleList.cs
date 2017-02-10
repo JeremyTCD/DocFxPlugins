@@ -10,6 +10,7 @@ using HtmlAgilityPack;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.DocAsCode.MarkdownLite;
+using System.Globalization;
 
 namespace DocFxPlugins
 {
@@ -23,7 +24,7 @@ namespace DocFxPlugins
         }
 
         public ImmutableDictionary<string, object> PrepareMetadata(ImmutableDictionary<string, object> metadata)
-        { 
+        {
             return metadata;
         }
 
@@ -33,19 +34,16 @@ namespace DocFxPlugins
             {
                 throw new ArgumentNullException("Base directory cannot be null");
             }
-            Dictionary<string, ArticleListItem> items = new Dictionary<string, ArticleListItem>();
-            // TODO don't include html files that aren't articles 
-            List<string> htmlFiles = (from item in manifest.Files ?? Enumerable.Empty<ManifestItem>()
-                                      from output in item.OutputFiles
-                                      where output.Key.Equals(".html", StringComparison.OrdinalIgnoreCase)
-                                      select output.Value.RelativePath).ToList();
-            if (htmlFiles.Count == 0)
+
+            List<string> articleHtmlFiles = GetArticleHtmlFiles(manifest);
+            if (articleHtmlFiles.Count == 0)
             {
                 return manifest;
             }
 
-            Logger.LogInfo($"Extracting data from {htmlFiles.Count} html files");
-            foreach (string relativePath in htmlFiles)
+            Logger.LogInfo($"Extracting data from {articleHtmlFiles.Count} html files");
+            List<ArticleListItem> articleListItems = new List<ArticleListItem>();
+            foreach (string relativePath in articleHtmlFiles)
             {
                 string filePath = Path.Combine(outputFolder, relativePath);
                 HtmlDocument htmlDoc = new HtmlDocument();
@@ -62,21 +60,70 @@ namespace DocFxPlugins
                         Logger.LogWarning($"Warning: Can't load content from {filePath}: {ex.Message}");
                         continue;
                     }
-                    ArticleListItem indexItem = ExtractItem(htmlDoc, relativePath);
-                    if (indexItem != null)
+                    ArticleListItem articleListItem = ExtractItem(htmlDoc, relativePath);
+                    if (articleListItem != null)
                     {
-                        items[relativePath] = indexItem;
+                        articleListItems.Add(articleListItem);
                     }
                 }
             }
-            
-            // TODO Sort items by date
-            // TODO Insert items into article list page
+
+            articleListItems.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
+            InsertArticlesIntoRecent(outputFolder, articleListItems);
 
             return manifest;
         }
 
-        internal ArticleListItem ExtractItem(HtmlDocument html, string href)
+        private void InsertArticlesIntoRecent(string outputFolder, List<ArticleListItem> articleListItems)
+        {
+            string recentFile = Path.Combine(outputFolder, "articles/recent.html");
+            HtmlDocument htmlDoc = new HtmlDocument();
+            htmlDoc.Load(recentFile, Encoding.UTF8);
+
+            HtmlNode articleListItemsNode = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@class, 'al-items')]");
+
+            foreach(ArticleListItem item in articleListItems)
+            {
+                HtmlNode alItem = htmlDoc.CreateElement("div");
+                alItem.Attributes.Add("class", "al-item");
+                articleListItemsNode.AppendChild(alItem);
+
+                HtmlNode itemBrief = htmlDoc.CreateElement("div");
+                itemBrief.Attributes.Add("class", "item-brief");
+                itemBrief.InnerHtml = item.Keywords;
+                alItem.AppendChild(itemBrief);
+
+                HtmlNode itemHref = htmlDoc.CreateElement("div");
+                itemHref.Attributes.Add("class", "item-href");
+                itemHref.InnerHtml = item.Href;
+                alItem.AppendChild(itemHref);
+
+                HtmlNode itemTitle = htmlDoc.CreateElement("div");
+                itemTitle.Attributes.Add("class", "item-title");
+                alItem.AppendChild(itemTitle);
+
+                HtmlNode itemTitleAnchor = htmlDoc.CreateElement("a");
+                itemTitleAnchor.Attributes.Add("href", item.Href);
+                itemTitleAnchor.Attributes.Add("target", "_blank");
+                itemTitleAnchor.InnerHtml = item.Title;
+                itemTitle.AppendChild(itemTitleAnchor);
+            }
+
+            htmlDoc.Save(recentFile);
+        }
+
+        private List<string> GetArticleHtmlFiles(Manifest manifest)
+        {
+            return (from item in manifest.Files ?? Enumerable.Empty<ManifestItem>()
+                     from output in item.OutputFiles
+                     where item.SourceRelativePath.StartsWith("articles/") &&
+                        item.DocumentType != "Toc" &&
+                        item.SourceRelativePath != "articles/recent.md" &&
+                        output.Key.Equals(".html", StringComparison.OrdinalIgnoreCase)
+                     select output.Value.RelativePath).ToList();
+        }
+
+        private ArticleListItem ExtractItem(HtmlDocument html, string href)
         {
             StringBuilder contentBuilder = new StringBuilder();
 
@@ -91,16 +138,31 @@ namespace DocFxPlugins
 
             string content = NormalizeContent(contentBuilder.ToString());
             string title = ExtractTitleFromHtml(html);
+            string dateRaw = ExtractDateFromHtml(html);
+            DateTime date = default(DateTime);
 
-            // TODO extract date
+            try
+            {
+                date = DateTime.ParseExact(dateRaw, "d", new CultureInfo("en-us"));
+            }
+            catch
+            {
+                throw new InvalidDataException($"{nameof(CreateArticleList)}: Article {href}'s date is invalid");
+            }
 
-            return new ArticleListItem { Href = href, Title = title, Keywords = content };
+            return new ArticleListItem { Href = href, Title = title, Keywords = content, DateRaw = dateRaw, Date = date };
+        }
+
+        private string ExtractDateFromHtml(HtmlDocument html)
+        {
+            HtmlNode dateNode = html.DocumentNode.SelectSingleNode("//div[contains(@class,'meta')]/span[contains(@class,'date')]");
+            return dateNode?.InnerText;
         }
 
         private string ExtractTitleFromHtml(HtmlDocument html)
         {
             HtmlNode titleNode = html.DocumentNode.SelectSingleNode("//head/title");
-            string originalTitle = titleNode?.InnerText;
+            string originalTitle = titleNode.InnerText;
             return NormalizeContent(originalTitle);
         }
 
