@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace DocFxPlugins
 {
@@ -12,6 +13,12 @@ namespace DocFxPlugins
 
         [JsonProperty("keywords")]
         public string Keywords { get; set; }
+
+        [JsonProperty("dateRaw")]
+        public string DateRaw { get; set; }
+
+        [JsonProperty("date")]
+        public DateTime Date { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -28,7 +35,10 @@ namespace DocFxPlugins
             {
                 return true;
             }
-            return string.Equals(this.Title, other.Title) && string.Equals(this.Href, other.Href) && string.Equals(this.Keywords, other.Keywords);
+            return string.Equals(this.Title, other.Title) && 
+                string.Equals(this.Href, other.Href) && 
+                string.Equals(this.Keywords, other.Keywords) &&
+                string.Equals(this.DateRaw, other.DateRaw);
         }
 
         public override int GetHashCode()
