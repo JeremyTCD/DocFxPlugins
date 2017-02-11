@@ -9,8 +9,6 @@ using Microsoft.DocAsCode.Common;
 using HtmlAgilityPack;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.DocAsCode.MarkdownLite;
-using System.Globalization;
 
 namespace DocFxPlugins
 {
