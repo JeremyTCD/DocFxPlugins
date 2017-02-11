@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System;
 
 namespace DocFxPlugins
@@ -8,17 +9,11 @@ namespace DocFxPlugins
         [JsonProperty("href")]
         public string Href { get; set; }
 
-        [JsonProperty("title")]
-        public string Title { get; set; }
-
-        [JsonProperty("keywords")]
-        public string Keywords { get; set; }
-
-        [JsonProperty("dateRaw")]
-        public string DateRaw { get; set; }
-
         [JsonProperty("date")]
         public DateTime Date { get; set; }
+
+        [JsonProperty("snippet")]
+        public HtmlNode Snippet { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -35,15 +30,14 @@ namespace DocFxPlugins
             {
                 return true;
             }
-            return string.Equals(this.Title, other.Title) && 
-                string.Equals(this.Href, other.Href) && 
-                string.Equals(this.Keywords, other.Keywords) &&
-                string.Equals(this.DateRaw, other.DateRaw);
+            return HtmlNode.Equals(this.Snippet, other.Snippet) && 
+                string.Equals(this.Href, other.Href) &&
+                DateTime.Equals(this.Date, other.Date);
         }
 
         public override int GetHashCode()
         {
-            return Title.GetHashCode() ^ Href.GetHashCode() ^ Keywords.GetHashCode();
+            return Snippet.GetHashCode() ^ Href.GetHashCode() ^ Date.GetHashCode();
         }
     }
 }
