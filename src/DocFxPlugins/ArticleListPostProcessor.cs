@@ -21,6 +21,10 @@ namespace DocFxPlugins
 
         public ImmutableDictionary<string, object> PrepareMetadata(ImmutableDictionary<string, object> metadata)
         {
+            object length = null;
+            metadata.TryGetValue(ArticleListConstants.ArticleListSnippetLengthKey, out length);
+            ArticleSnippetLength = length as int? ?? ArticleListConstants.DefaultArticleSnippetLength;
+
             return metadata;
         }
 
