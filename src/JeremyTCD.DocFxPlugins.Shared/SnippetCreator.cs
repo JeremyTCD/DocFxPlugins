@@ -10,15 +10,17 @@ namespace JeremyTCD.DocFxPlugins.Shared
     {
         public static HtmlNode CreateSnippet(HtmlNode article, string href, int snippetLength)
         {
+            HtmlNode snippet = HtmlNode.CreateNode("<div></div>");
+            snippet.AppendChildren(article.ChildNodes);
             HtmlNode titleAnchorNode = HtmlNode.CreateNode($"<a href=\"/{href}\"></a>");
-            HtmlNode titleNode = article.SelectSingleNode(".//h1");
+            HtmlNode titleNode = snippet.SelectSingleNode(".//h1");
             titleAnchorNode.InnerHtml = titleNode.InnerText;
             titleNode.RemoveAllChildren();
             titleNode.AppendChild(titleAnchorNode);
 
-            TrimNode(article, 0, snippetLength);
+            TrimNode(snippet, 0, snippetLength);
 
-            HtmlNodeCollection headers = article.SelectNodes(".//*[self::h2 or self::h3 or self::h4 or self::h5 or self::h6]");
+            HtmlNodeCollection headers = snippet.SelectNodes(".//*[self::h2 or self::h3 or self::h4 or self::h5 or self::h6]");
             if (headers != null)
             {
                 foreach (HtmlNode node in headers)
@@ -27,7 +29,7 @@ namespace JeremyTCD.DocFxPlugins.Shared
                 }
             }
 
-            return article.Clone();
+            return snippet;
         }
 
         private static int TrimNode(HtmlNode node, int currentSnippetLength, int snippetLength)
