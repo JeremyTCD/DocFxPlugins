@@ -50,17 +50,21 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
 
             foreach (ManifestItem manifestItem in manifest.Files)
             {
-                Dictionary<string, object> metadata = manifestItem.Metadata as Dictionary<string, object>;
-                if (metadata != null && metadata.ContainsKey(ArticleListConstants.EnableArticleListKey))
+                object enableArticleList = null;
+                manifestItem.Metadata.TryGetValue(ArticleListConstants.EnableArticleListKey, out enableArticleList);
+                if (enableArticleList as bool? != true)
                 {
-                    articleListEnabledFiles.Add(Path.Combine(outputFolder,
-                        manifestItem.
-                            OutputFiles.
-                            First(o => o.Key.Equals(".html", StringComparison.OrdinalIgnoreCase)).
-                            Value.
-                            RelativePath));
+                    continue;
                 }
+
+                articleListEnabledFiles.Add(Path.Combine(outputFolder,
+                    manifestItem.
+                        OutputFiles.
+                        First(o => o.Key.Equals(".html", StringComparison.OrdinalIgnoreCase)).
+                        Value.
+                        RelativePath));
             }
+
 
             foreach (string file in articleListEnabledFiles)
             {
@@ -87,8 +91,9 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
 
             foreach (ManifestItem manifestItem in manifest.Files)
             {
-                Dictionary<string, object> metadata = manifestItem.Metadata as Dictionary<string, object>;
-                if (metadata == null || !metadata.ContainsKey(ArticleListConstants.IncludeInArticleListKey))
+                object includeInArticleList = null;
+                manifestItem.Metadata.TryGetValue(ArticleListConstants.IncludeInArticleListKey, out includeInArticleList);
+                if (includeInArticleList as bool? != true)
                 {
                     continue;
                 }
@@ -127,7 +132,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                 {
                     Href = href,
                     Snippet = snippet,
-                    Date = (DateTime)metadata[ArticleListConstants.DateKey]
+                    Date = (DateTime)manifestItem.Metadata[ArticleListConstants.DateKey]
                 });
             }
 
