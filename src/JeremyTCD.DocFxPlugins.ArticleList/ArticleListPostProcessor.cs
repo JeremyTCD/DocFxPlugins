@@ -106,7 +106,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
 
                 if (!File.Exists(filePath))
                 {
-                    Logger.LogWarning($"Warning: {filePath} does not exist");
+                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} does not exist");
                 }
 
                 HtmlDocument htmlDoc = new HtmlDocument();
@@ -117,15 +117,13 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogWarning($"Warning: Can't load content from {filePath}: {ex.Message}");
-                    continue;
+                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} cannot be loaded");
                 }
 
                 HtmlNode snippet = ExtractSnippet(htmlDoc);
                 if (snippet == null)
                 {
-                    Logger.LogWarning($"Warning: {filePath} has no article node");
-                    continue;
+                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} has no article node");
                 }
                 NormalizeSnippet(snippet, href);
 
