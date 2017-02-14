@@ -7,7 +7,7 @@ using Microsoft.DocAsCode.Build.ConceptualDocuments;
 using System.IO;
 using System.Globalization;
 
-namespace DocFxPlugins
+namespace JeremyTCD.DocFxPlugins.ArticleList
 {
     [Export(nameof(ConceptualDocumentProcessor), typeof(IDocumentBuildStep))]
     public class ArticleListBuildStep : IDocumentBuildStep
@@ -30,15 +30,15 @@ namespace DocFxPlugins
                 {
                     object obj = null;
 
-                    content.TryGetValue("jr.includeInArticleList", out obj);
+                    content.TryGetValue(ArticleListConstants.IncludeInArticleListKey, out obj);
                     bool includeInArticleList = obj is bool && (bool) obj ? true: false;
                     if (includeInArticleList)
                     {
                         IDictionary<string, object> manifestProperties = model.ManifestProperties as IDictionary<string, object>;
 
-                        manifestProperties.Add("jr.includeInArticleList", true);
+                        manifestProperties.Add(ArticleListConstants.IncludeInArticleListKey, true);
 
-                        content.TryGetValue("jr.date", out obj);
+                        content.TryGetValue(ArticleListConstants.DateKey, out obj);
                         DateTime date = default(DateTime);
                         try
                         {
@@ -49,16 +49,16 @@ namespace DocFxPlugins
                             throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {model.Key}'s date is invalid");
                         }
 
-                        manifestProperties.Add("jr.date", date);
+                        manifestProperties.Add(ArticleListConstants.DateKey, date);
                     }
 
-                    content.TryGetValue("jr.enableArticleList", out obj);
+                    content.TryGetValue(ArticleListConstants.EnableArticleListKey, out obj);
                     bool enableArticleList = obj is bool && (bool)obj ? true : false;
                     if (enableArticleList)
                     {
                         IDictionary<string, object> manifestProperties = model.ManifestProperties as IDictionary<string, object>;
 
-                        manifestProperties.Add("jr.enableArticleList", true);
+                        manifestProperties.Add(ArticleListConstants.EnableArticleListKey, true);
                     }
                 }
             }

@@ -8,9 +8,8 @@ using System.IO;
 using Microsoft.DocAsCode.Common;
 using HtmlAgilityPack;
 using System.Text;
-using System.Text.RegularExpressions;
 
-namespace DocFxPlugins
+namespace JeremyTCD.DocFxPlugins.ArticleList
 {
     [Export(nameof(ArticleListPostProcessor), typeof(IPostProcessor))]
     public class ArticleListPostProcessor : IPostProcessor

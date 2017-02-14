@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace DocFxPlugins
+namespace JeremyTCD.DocFxPlugins.ArticleList
 {
     public class ArticleListItem
     {
