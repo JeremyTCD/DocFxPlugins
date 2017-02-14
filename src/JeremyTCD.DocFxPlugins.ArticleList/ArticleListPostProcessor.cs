@@ -115,7 +115,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                 {
                     htmlDoc.Load(filePath, Encoding.UTF8);
                 }
-                catch (Exception ex)
+                catch
                 {
                     throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} cannot be loaded");
                 }
@@ -159,7 +159,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
             TrimNode(snippet, 0);
 
             HtmlNodeCollection headers = snippet.SelectNodes(".//*[self::h2 or self::h3 or self::h4 or self::h5 or self::h6]");
-            if(headers == null)
+            if (headers == null)
             {
                 return;
             }
