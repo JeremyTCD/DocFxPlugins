@@ -8,6 +8,7 @@ using System.IO;
 using Microsoft.DocAsCode.Common;
 using HtmlAgilityPack;
 using System.Text;
+using System.Globalization;
 
 namespace JeremyTCD.DocFxPlugins.ArticleList
 {
@@ -128,11 +129,21 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                 }
                 NormalizeSnippet(snippet, href);
 
+                DateTime date = default(DateTime);
+                try
+                {
+                    date = DateTime.ParseExact(manifestItem.Metadata[ArticleListConstants.DateKey] as string, "d", new CultureInfo("en-us"));
+                }
+                catch
+                {
+                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} has an invalid {ArticleListConstants.DateKey}");
+                }
+
                 articleListItems.Add(new ArticleListItem
                 {
                     Href = href,
                     Snippet = snippet,
-                    Date = (DateTime)manifestItem.Metadata[ArticleListConstants.DateKey]
+                    Date = date
                 });
             }
 
