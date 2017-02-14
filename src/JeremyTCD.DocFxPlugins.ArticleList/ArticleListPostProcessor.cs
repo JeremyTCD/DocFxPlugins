@@ -120,7 +120,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                     throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} cannot be loaded");
                 }
 
-                HtmlNode snippet = ExtractSnippet(htmlDoc);
+                HtmlNode snippet = htmlDoc.DocumentNode.SelectSingleNode("//article")?.Clone();
                 if (snippet == null)
                 {
                     throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} has no article node");
@@ -146,18 +146,6 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
             }
 
             return articleListItems;
-        }
-
-        private HtmlNode ExtractSnippet(HtmlDocument html)
-        {
-            HtmlNode snippet = html.DocumentNode.SelectSingleNode("//article");
-
-            if (snippet == null)
-            {
-                return null;
-            }
-
-            return snippet.Clone();
         }
 
         private void NormalizeSnippet(HtmlNode snippet, string href)
