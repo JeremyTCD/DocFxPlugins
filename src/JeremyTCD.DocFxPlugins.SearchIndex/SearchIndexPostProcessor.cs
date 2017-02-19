@@ -114,7 +114,7 @@ namespace JeremyTCD.DocFxPlugins.SearchIndex
                 string text = NormalizeNodeText(stringBuilder.ToString());
 
                 HtmlNode snippet = SnippetCreator.CreateSnippet(article, href, SearchIndexSnippetLength);
-                snippet.Attributes.Add("class", "sr-item");
+                snippet.Attributes.Add("class", SearchIndexConstants.SearchIndexItemClass);
 
                 SearchIndexItems.Add(href, new SearchIndexItem
                 {
