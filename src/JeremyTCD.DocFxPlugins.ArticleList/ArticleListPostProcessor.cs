@@ -34,8 +34,6 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                 throw new ArgumentNullException("Base directory cannot be null");
             }
 
-
-
             List<ArticleListItem> articleListItems = GetArticleListItems(outputFolder, manifest);
             if (articleListItems.Count == 0)
             {
@@ -72,22 +70,21 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                     continue;
                 }
 
-                string filePath = Path.Combine(outputFolder,
-                    manifestItem.
-                        OutputFiles.
-                        First(o => o.Key.Equals(".html", StringComparison.OrdinalIgnoreCase)).
-                        Value.
-                        RelativePath);
+                string relPath = manifestItem.GetHtmlOutputRelPath();
 
-                HtmlDocument htmlDoc = new HtmlDocument();
-                htmlDoc.Load(filePath, Encoding.UTF8);
-
-                htmlDoc.
+                HtmlDocument htmlDoc = manifestItem.GetHtmlOutputDoc(outputFolder);
+                HtmlNode articleListWrapperNode = htmlDoc.
                     DocumentNode.
                     SelectSingleNode($"//div[@id='{ArticleListConstants.ArticleListWrapperNodeClass}']");
-                    AppendChild(articleListItemsNode);
+                if (articleListWrapperNode == null)
+                {
+                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Html output {relPath} has no article list wrapper node");
 
-                htmlDoc.Save(filePath);
+                }
+                articleListWrapperNode.AppendChild(articleListItemsNode);
+
+
+                htmlDoc.Save(Path.Combine(outputFolder, relPath));
             }
         }
 
@@ -104,33 +101,9 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                     continue;
                 }
 
-                string href = manifestItem.OutputFiles.First(o => o.Key.Equals(".html", StringComparison.OrdinalIgnoreCase)).Value.RelativePath;
-                string filePath = Path.Combine(outputFolder, href);
-
-                Logger.LogVerbose($"Generating article list item from {filePath}");
-
-                if (!File.Exists(filePath))
-                {
-                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} does not exist");
-                }
-
-                HtmlDocument htmlDoc = new HtmlDocument();
-
-                try
-                {
-                    htmlDoc.Load(filePath, Encoding.UTF8);
-                }
-                catch
-                {
-                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} cannot be loaded");
-                }
-
-                HtmlNode article = htmlDoc.DocumentNode.SelectSingleNode("//article");
-                if (article == null)
-                {
-                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} has no article node");
-                }
-                HtmlNode snippet = SnippetCreator.CreateSnippet(article, href, ArticleSnippetLength);
+                HtmlNode articleNode = manifestItem.GetHtmlOutputArticleNode(outputFolder);
+                string relPath = manifestItem.GetHtmlOutputRelPath();
+                HtmlNode snippetNode = SnippetCreator.CreateSnippet(articleNode, relPath, ArticleSnippetLength);
                 snippetNode.Attributes.Add("class", ArticleListConstants.ArticleListItemClass);
 
                 DateTime date = default(DateTime);
@@ -140,7 +113,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                 }
                 catch
                 {
-                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} has an invalid {ArticleListConstants.DateKey}");
+                    throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {manifestItem.SourceRelativePath} has an invalid {ArticleListConstants.DateKey}");
                 }
 
                 articleListItems.Add(new ArticleListItem

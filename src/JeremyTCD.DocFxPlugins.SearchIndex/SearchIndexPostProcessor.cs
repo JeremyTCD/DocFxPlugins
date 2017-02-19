@@ -82,41 +82,16 @@ namespace JeremyTCD.DocFxPlugins.SearchIndex
                     continue;
                 }
 
-                string href = manifestItem.OutputFiles.First(o => o.Key.Equals(".html", StringComparison.OrdinalIgnoreCase)).Value.RelativePath;
-                string filePath = Path.Combine(outputFolder, href);
-
-                Logger.LogVerbose($"Generating search index item from {filePath}");
-
-                if (!File.Exists(filePath))
-                {
-                    throw new InvalidDataException($"{nameof(SearchIndexPostProcessor)}: Article {filePath} does not exist");
-                }
-
-                HtmlDocument htmlDoc = new HtmlDocument();
-
-                try
-                {
-                    htmlDoc.Load(filePath, Encoding.UTF8);
-                }
-                catch
-                {
-                    throw new InvalidDataException($"{nameof(SearchIndexPostProcessor)}: Article {filePath} cannot be loaded");
-                }
-
-                HtmlNode article = htmlDoc.DocumentNode.SelectSingleNode("//article");
-                if (article == null)
-                {
-                    throw new InvalidDataException($"{nameof(SearchIndexPostProcessor)}: Article {filePath} has no article node");
-                }
-
+                string relPath = manifestItem.GetHtmlOutputRelPath();
+                HtmlNode articleNode = manifestItem.GetHtmlOutputArticleNode(outputFolder);
                 StringBuilder stringBuilder = new StringBuilder();
-                ExtractTextFromNode(article, stringBuilder);
+                ExtractTextFromNode(articleNode, stringBuilder);
                 string text = NormalizeNodeText(stringBuilder.ToString());
 
-                HtmlNode snippet = SnippetCreator.CreateSnippet(article, href, SearchIndexSnippetLength);
+                HtmlNode snippet = SnippetCreator.CreateSnippet(articleNode, relPath, SearchIndexSnippetLength);
                 snippet.Attributes.Add("class", SearchIndexConstants.SearchIndexItemClass);
 
-                SearchIndexItems.Add(href, new SearchIndexItem
+                SearchIndexItems.Add(relPath, new SearchIndexItem
                 {
                     RelPath = relPath,
                     SnippetHtml = snippet.OuterHtml,
@@ -139,12 +114,6 @@ namespace JeremyTCD.DocFxPlugins.SearchIndex
 
         private void ExtractTextFromNode(HtmlNode node, StringBuilder stringBuilder)
         {
-            if (node == null)
-            {
-                return;
-            }
-
-
             if (!node.HasChildNodes)
             {
                 stringBuilder.Append(node.InnerText);
