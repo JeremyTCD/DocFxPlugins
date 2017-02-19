@@ -55,7 +55,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
 
             foreach (ArticleListItem articleListItem in articleListItems)
             {
-                articleListNode.AppendChild(articleListItem.Snippet);
+                articleListNode.AppendChild(articleListItem.SnippetNode);
             }
 
             return articleListNode;
@@ -145,8 +145,8 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
 
                 articleListItems.Add(new ArticleListItem
                 {
-                    Href = href,
-                    Snippet = snippet,
+                    RelPath = relPath,
+                    SnippetNode = snippetNode,
                     Date = date
                 });
             }

@@ -6,14 +6,14 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
 {
     public class ArticleListItem
     {
-        [JsonProperty("href")]
-        public string Href { get; set; }
+        [JsonProperty("relPath")]
+        public string RelPath { get; set; }
 
         [JsonProperty("date")]
         public DateTime Date { get; set; }
 
-        [JsonProperty("snippet")]
-        public HtmlNode Snippet { get; set; }
+        [JsonProperty("snippetNode")]
+        public HtmlNode SnippetNode { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -30,14 +30,14 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
             {
                 return true;
             }
-            return HtmlNode.Equals(this.Snippet, other.Snippet) && 
-                string.Equals(this.Href, other.Href) &&
+            return HtmlNode.Equals(this.SnippetNode, other.SnippetNode) && 
+                string.Equals(this.RelPath, other.RelPath) &&
                 DateTime.Equals(this.Date, other.Date);
         }
 
         public override int GetHashCode()
         {
-            return Snippet.GetHashCode() ^ Href.GetHashCode() ^ Date.GetHashCode();
+            return SnippetNode.GetHashCode() ^ RelPath.GetHashCode() ^ Date.GetHashCode();
         }
     }
 }
