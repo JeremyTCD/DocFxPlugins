@@ -51,7 +51,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
 
         private HtmlNode GenerateArticleListNode(List<ArticleListItem> articleListItems)
         {
-            HtmlNode articleListNode = HtmlNode.CreateNode("<div class=\"al-items-all\"></div>");
+            HtmlNode articleListNode = HtmlNode.CreateNode($"<div class=\"{ArticleListConstants.ArticleListNodeClass}\"></div>");
 
             foreach (ArticleListItem articleListItem in articleListItems)
             {
@@ -84,7 +84,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
 
                 htmlDoc.
                     DocumentNode.
-                    SelectSingleNode("//div[@id='article-list']").
+                    SelectSingleNode($"//div[@id='{ArticleListConstants.ArticleListWrapperNodeClass}']");
                     AppendChild(articleListItemsNode);
 
                 htmlDoc.Save(filePath);
@@ -131,7 +131,7 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                     throw new InvalidDataException($"{nameof(ArticleListPostProcessor)}: Article {filePath} has no article node");
                 }
                 HtmlNode snippet = SnippetCreator.CreateSnippet(article, href, ArticleSnippetLength);
-                snippet.Attributes.Add("class", "al-item");
+                snippetNode.Attributes.Add("class", ArticleListConstants.ArticleListItemClass);
 
                 DateTime date = default(DateTime);
                 try
