@@ -34,6 +34,8 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                 throw new ArgumentNullException("Base directory cannot be null");
             }
 
+
+
             List<ArticleListItem> articleListItems = GetArticleListItems(outputFolder, manifest);
             if (articleListItems.Count == 0)
             {
@@ -41,15 +43,26 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
             }
 
             articleListItems.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
-            InsertArticleListItems(outputFolder, manifest, articleListItems);
+            HtmlNode articleListNode = GenerateArticleListNode(articleListItems);
+            InsertArticleListNode(outputFolder, manifest, articleListNode);
 
             return manifest;
         }
 
-        private void InsertArticleListItems(string outputFolder, Manifest manifest, List<ArticleListItem> articleListItems)
+        private HtmlNode GenerateArticleListNode(List<ArticleListItem> articleListItems)
         {
-            List<string> articleListEnabledFiles = new List<string>();
+            HtmlNode articleListNode = HtmlNode.CreateNode("<div class=\"al-items-all\"></div>");
 
+            foreach (ArticleListItem articleListItem in articleListItems)
+            {
+                articleListNode.AppendChild(articleListItem.Snippet);
+            }
+
+            return articleListNode;
+        }
+
+        private void InsertArticleListNode(string outputFolder, Manifest manifest, HtmlNode articleListItemsNode)
+        {
             foreach (ManifestItem manifestItem in manifest.Files)
             {
                 object enableArticleList = null;
@@ -59,28 +72,22 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
                     continue;
                 }
 
-                articleListEnabledFiles.Add(Path.Combine(outputFolder,
+                string filePath = Path.Combine(outputFolder,
                     manifestItem.
                         OutputFiles.
                         First(o => o.Key.Equals(".html", StringComparison.OrdinalIgnoreCase)).
                         Value.
-                        RelativePath));
-            }
+                        RelativePath);
 
-
-            foreach (string file in articleListEnabledFiles)
-            {
                 HtmlDocument htmlDoc = new HtmlDocument();
-                htmlDoc.Load(file, Encoding.UTF8);
+                htmlDoc.Load(filePath, Encoding.UTF8);
 
-                HtmlNode articleListItemsNode = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@class, 'al-items-all')]");
+                htmlDoc.
+                    DocumentNode.
+                    SelectSingleNode("//div[@id='article-list']").
+                    AppendChild(articleListItemsNode);
 
-                foreach (ArticleListItem item in articleListItems)
-                {
-                    articleListItemsNode.AppendChild(item.Snippet);
-                }
-
-                htmlDoc.Save(file);
+                htmlDoc.Save(filePath);
             }
         }
 
