@@ -5,8 +5,8 @@
 
     public class SearchIndexItem
     {
-        [JsonProperty("href")]
-        public string Href { get; set; }
+        [JsonProperty("relPath")]
+        public string RelPath { get; set; }
 
         [JsonProperty("snippetHtml")]
         public string SnippetHtml { get; set; }
@@ -30,13 +30,13 @@
                 return true;
             }
             return string.Equals(this.SnippetHtml, other.SnippetHtml) && 
-                string.Equals(this.Href, other.Href) && 
+                string.Equals(this.RelPath, other.RelPath) && 
                 string.Equals(this.Text, other.Text);
         }
 
         public override int GetHashCode()
         {
-            return SnippetHtml.GetHashCode() ^ Href.GetHashCode() ^ Text.GetHashCode();
+            return SnippetHtml.GetHashCode() ^ RelPath.GetHashCode() ^ Text.GetHashCode();
         }
     }
 }

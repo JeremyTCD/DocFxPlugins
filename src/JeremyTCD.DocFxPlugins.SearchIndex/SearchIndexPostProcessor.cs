@@ -118,7 +118,7 @@ namespace JeremyTCD.DocFxPlugins.SearchIndex
 
                 SearchIndexItems.Add(href, new SearchIndexItem
                 {
-                    Href = href,
+                    RelPath = relPath,
                     SnippetHtml = snippet.OuterHtml,
                     Text = text
                 });
