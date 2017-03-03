@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B9B3999E-84F9-4812-9069-04965FA468A6}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,14 +11,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B9B3999E-84F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB56EA65-098E-4BA8-9AB4-48BAA319E0DC}"
 	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
 		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JeremyTCD.DocFxPlugins.ArticleList", "src\JeremyTCD.DocFxPlugins.ArticleList\JeremyTCD.DocFxPlugins.ArticleList.csproj", "{CE5F4C5B-8083-4F09-B234-91777F6FA946}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "JeremyTCD.DocFxPlugins.ArticleList", "src\JeremyTCD.DocFxPlugins.ArticleList\JeremyTCD.DocFxPlugins.ArticleList.xproj", "{CE5F4C5B-8083-4F09-B234-91777F6FA946}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JeremyTCD.DocFxPlugins.Shared", "src\JeremyTCD.DocFxPlugins.Shared\JeremyTCD.DocFxPlugins.Shared.csproj", "{A6EB8C1A-79D3-45BB-8321-2D2852F5F036}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "JeremyTCD.DocFxPlugins.Shared", "src\JeremyTCD.DocFxPlugins.Shared\JeremyTCD.DocFxPlugins.Shared.xproj", "{A6EB8C1A-79D3-45BB-8321-2D2852F5F036}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JeremyTCD.DocFxPlugins.SearchIndex", "src\JeremyTCD.DocFxPlugins.SearchIndex\JeremyTCD.DocFxPlugins.SearchIndex.csproj", "{592698B4-B12D-4D21-B999-050FA1B23504}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "JeremyTCD.DocFxPlugins.SearchIndex", "src\JeremyTCD.DocFxPlugins.SearchIndex\JeremyTCD.DocFxPlugins.SearchIndex.xproj", "{592698B4-B12D-4D21-B999-050FA1B23504}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
