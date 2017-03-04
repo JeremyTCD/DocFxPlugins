@@ -2,13 +2,12 @@
 {
     public static class SortedArticleListConstants
     {
-        public const string ArticleListSnippetLengthKey = "jr.articleListSnippetLength";
-        public const string EnableArticleListKey = "jr.enableArticleList";
-        public const string IncludeInArticleListKey = "jr.includeInArticleList";
+        public const string SalSnippetLengthKey = "jr.salSnippetLength";
+        public const string EnableSalKey = "jr.enableSal";
+        public const string IncludeInSalKey = "jr.includeInSal";
         public const string DateKey = "jr.date";
-        public const string ArticleListItemClass = "al-item";
-        public const string ArticleListNodeClass = "al-items-all";
-        public const string ArticleListWrapperNodeClass = "article-list";
-        public const int DefaultArticleSnippetLength = 500;
+        public const string SalNodeClass = "sal-items-all";
+        public const string SalWrapperNodeId = "sorted-article-list";
+        public const int DefaultSalSnippetLength = 500;
     }
 }

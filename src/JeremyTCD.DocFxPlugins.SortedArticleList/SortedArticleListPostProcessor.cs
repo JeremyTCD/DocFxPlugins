@@ -16,13 +16,13 @@ namespace JeremyTCD.DocFxPlugins.SortedArticleList
     [Export(nameof(SortedArticleListPostProcessor), typeof(IPostProcessor))]
     public class SortedArticleListPostProcessor : IPostProcessor
     {
-        private int ArticleSnippetLength;
+        private int SalSnippetLength;
 
         public ImmutableDictionary<string, object> PrepareMetadata(ImmutableDictionary<string, object> metadata)
         {
             object length = null;
-            metadata.TryGetValue(SortedArticleListConstants.ArticleListSnippetLengthKey, out length);
-            ArticleSnippetLength = length as int? ?? SortedArticleListConstants.DefaultArticleSnippetLength;
+            metadata.TryGetValue(SortedArticleListConstants.SalSnippetLengthKey, out length);
+            SalSnippetLength = length as int? ?? SortedArticleListConstants.DefaultSalSnippetLength;
 
             return metadata;
         }
@@ -34,38 +34,38 @@ namespace JeremyTCD.DocFxPlugins.SortedArticleList
                 throw new ArgumentNullException("Base directory cannot be null");
             }
 
-            List<SortedArticleListItem> articleListItems = GetArticleListItems(outputFolder, manifest);
-            if (articleListItems.Count == 0)
+            List<SortedArticleListItem> salItems = GetSalItems(outputFolder, manifest);
+            if (salItems.Count == 0)
             {
                 return manifest;
             }
 
-            articleListItems.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
-            HtmlNode articleListNode = GenerateArticleListNode(articleListItems);
-            InsertArticleListNode(outputFolder, manifest, articleListNode);
+            salItems.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
+            HtmlNode salNode = GenerateSalNode(salItems);
+            InsertSalNode(outputFolder, manifest, salNode);
 
             return manifest;
         }
 
-        private HtmlNode GenerateArticleListNode(List<SortedArticleListItem> articleListItems)
+        private HtmlNode GenerateSalNode(List<SortedArticleListItem> salItems)
         {
-            HtmlNode articleListNode = HtmlNode.CreateNode($"<div class=\"{SortedArticleListConstants.ArticleListNodeClass}\"></div>");
+            HtmlNode salNode = HtmlNode.CreateNode($"<div class=\"{SortedArticleListConstants.SalNodeClass}\"></div>");
 
-            foreach (SortedArticleListItem articleListItem in articleListItems)
+            foreach (SortedArticleListItem salItem in salItems)
             {
-                articleListNode.AppendChild(articleListItem.SnippetNode);
+                salNode.AppendChild(salItem.SnippetNode);
             }
 
-            return articleListNode;
+            return salNode;
         }
 
-        private void InsertArticleListNode(string outputFolder, Manifest manifest, HtmlNode articleListItemsNode)
+        private void InsertSalNode(string outputFolder, Manifest manifest, HtmlNode salItemsNode)
         {
             foreach (ManifestItem manifestItem in manifest.Files)
             {
-                object enableArticleList = null;
-                manifestItem.Metadata.TryGetValue(SortedArticleListConstants.EnableArticleListKey, out enableArticleList);
-                if (enableArticleList as bool? != true)
+                object enableSal = null;
+                manifestItem.Metadata.TryGetValue(SortedArticleListConstants.EnableSalKey, out enableSal);
+                if (enableSal as bool? != true)
                 {
                     continue;
                 }
@@ -73,38 +73,37 @@ namespace JeremyTCD.DocFxPlugins.SortedArticleList
                 string relPath = manifestItem.GetHtmlOutputRelPath();
 
                 HtmlDocument htmlDoc = manifestItem.GetHtmlOutputDoc(outputFolder);
-                HtmlNode articleListWrapperNode = htmlDoc.
+                HtmlNode salWrapperNode = htmlDoc.
                     DocumentNode.
-                    SelectSingleNode($"//div[@id='{SortedArticleListConstants.ArticleListWrapperNodeClass}']");
-                if (articleListWrapperNode == null)
+                    SelectSingleNode($"//div[@id='{SortedArticleListConstants.SalWrapperNodeId}']");
+                if (salWrapperNode == null)
                 {
-                    throw new InvalidDataException($"{nameof(SortedArticleListPostProcessor)}: Html output {relPath} has no article list wrapper node");
+                    throw new InvalidDataException($"{nameof(SortedArticleListPostProcessor)}: Html output {relPath} has no sorted article list wrapper node");
 
                 }
-                articleListWrapperNode.AppendChild(articleListItemsNode);
+                salWrapperNode.AppendChild(salItemsNode);
 
 
                 htmlDoc.Save(Path.Combine(outputFolder, relPath));
             }
         }
 
-        private List<SortedArticleListItem> GetArticleListItems(string outputFolder, Manifest manifest)
+        private List<SortedArticleListItem> GetSalItems(string outputFolder, Manifest manifest)
         {
-            List<SortedArticleListItem> articleListItems = new List<SortedArticleListItem>();
+            List<SortedArticleListItem> salItems = new List<SortedArticleListItem>();
 
             foreach (ManifestItem manifestItem in manifest.Files)
             {
-                object includeInArticleList = null;
-                manifestItem.Metadata.TryGetValue(SortedArticleListConstants.IncludeInArticleListKey, out includeInArticleList);
-                if (includeInArticleList as bool? != true)
+                object includeInSal = null;
+                manifestItem.Metadata.TryGetValue(SortedArticleListConstants.IncludeInSalKey, out includeInSal);
+                if (includeInSal as bool? != true)
                 {
                     continue;
                 }
 
                 HtmlNode articleNode = manifestItem.GetHtmlOutputArticleNode(outputFolder);
                 string relPath = manifestItem.GetHtmlOutputRelPath();
-                HtmlNode snippetNode = SnippetCreator.CreateSnippet(articleNode, relPath, ArticleSnippetLength);
-                snippetNode.Attributes.Add("class", SortedArticleListConstants.ArticleListItemClass);
+                HtmlNode snippetNode = SnippetCreator.CreateSnippet(articleNode, relPath, SalSnippetLength);
 
                 DateTime date = default(DateTime);
                 try
@@ -116,7 +115,7 @@ namespace JeremyTCD.DocFxPlugins.SortedArticleList
                     throw new InvalidDataException($"{nameof(SortedArticleListPostProcessor)}: Article {manifestItem.SourceRelativePath} has an invalid {SortedArticleListConstants.DateKey}");
                 }
 
-                articleListItems.Add(new SortedArticleListItem
+                salItems.Add(new SortedArticleListItem
                 {
                     RelPath = relPath,
                     SnippetNode = snippetNode,
@@ -124,7 +123,7 @@ namespace JeremyTCD.DocFxPlugins.SortedArticleList
                 });
             }
 
-            return articleListItems;
+            return salItems;
         }
     }
 }
