@@ -49,7 +49,7 @@ namespace JeremyTCD.DocFxPlugins.SortedArticleList
 
         private HtmlNode GenerateSalNode(List<SortedArticleListItem> salItems)
         {
-            HtmlNode salNode = HtmlNode.CreateNode($"<div class=\"{SortedArticleListConstants.SalNodeClass}\"></div>");
+            HtmlNode salNode = HtmlNode.CreateNode($"<div></div>");
 
             foreach (SortedArticleListItem salItem in salItems)
             {
@@ -75,13 +75,13 @@ namespace JeremyTCD.DocFxPlugins.SortedArticleList
                 HtmlDocument htmlDoc = manifestItem.GetHtmlOutputDoc(outputFolder);
                 HtmlNode salWrapperNode = htmlDoc.
                     DocumentNode.
-                    SelectSingleNode($"//div[@id='{SortedArticleListConstants.SalWrapperNodeId}']");
+                    SelectSingleNode($"//div[@id='{SortedArticleListConstants.SalAllItemsNodeId}']");
                 if (salWrapperNode == null)
                 {
-                    throw new InvalidDataException($"{nameof(SortedArticleListPostProcessor)}: Html output {relPath} has no sorted article list wrapper node");
+                    throw new InvalidDataException($"{nameof(SortedArticleListPostProcessor)}: Html output {relPath} has no sorted article list all-items node");
 
                 }
-                salWrapperNode.AppendChild(salItemsNode);
+                salWrapperNode.AppendChildren(salItemsNode.ChildNodes);
 
 
                 htmlDoc.Save(Path.Combine(outputFolder, relPath));

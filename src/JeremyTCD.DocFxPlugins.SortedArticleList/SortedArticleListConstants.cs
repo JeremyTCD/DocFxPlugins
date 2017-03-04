@@ -6,7 +6,7 @@
         public const string EnableSalKey = "jr.enableSal";
         public const string IncludeInSalKey = "jr.includeInSal";
         public const string DateKey = "jr.date";
-        public const string SalNodeClass = "sal-items-all";
+        public const string SalAllItemsNodeId = "sal-all-items";
         public const string SalWrapperNodeId = "sorted-article-list";
         public const int DefaultSalSnippetLength = 500;
     }
