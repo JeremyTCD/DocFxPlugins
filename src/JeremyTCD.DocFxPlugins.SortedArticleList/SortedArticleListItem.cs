@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using System;
 
-namespace JeremyTCD.DocFxPlugins.ArticleList
+namespace JeremyTCD.DocFxPlugins.SortedArticleList
 {
-    public class ArticleListItem
+    public class SortedArticleListItem
     {
         [JsonProperty("relPath")]
         public string RelPath { get; set; }
@@ -17,10 +17,10 @@ namespace JeremyTCD.DocFxPlugins.ArticleList
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as ArticleListItem);
+            return this.Equals(obj as SortedArticleListItem);
         }
 
-        public bool Equals(ArticleListItem other)
+        public bool Equals(SortedArticleListItem other)
         {
             if (other == null)
             {

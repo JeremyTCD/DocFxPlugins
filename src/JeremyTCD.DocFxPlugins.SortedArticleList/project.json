@@ -1,7 +1,7 @@
 {
-  "title": "JeremyTCD.DocFxPlugins.ArticleList",
+  "title": "JeremyTCD.DocFxPlugins.SortedArticleList",
   "buildOptions": {
-    "outputName": "JeremyTCD.DocFxPlugins.ArticleList"
+    "outputName": "JeremyTCD.DocFxPlugins.SortedArticleList"
   },
   "version": "1.0.0",
   "dependencies": {

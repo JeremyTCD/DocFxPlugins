@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyProduct("JeremyTCD.DocFxPlugins")]
-[assembly: AssemblyTitle("JeremyTCD.DocFxPlugins.ArticleList")]
+[assembly: AssemblyTitle("JeremyTCD.DocFxPlugins.SortedArticleList")]
 [assembly: AssemblyCopyright("Copyright © JeremyTCD 2017")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

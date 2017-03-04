@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace JeremyTCD.DocFxPlugins.ArticleList
+﻿namespace JeremyTCD.DocFxPlugins.SortedArticleList
 {
-    public static class ArticleListConstants
+    public static class SortedArticleListConstants
     {
         public const string ArticleListSnippetLengthKey = "jr.articleListSnippetLength";
         public const string EnableArticleListKey = "jr.enableArticleList";
