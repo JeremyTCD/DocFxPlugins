@@ -10,7 +10,7 @@ namespace JeremyTCD.DocFxPlugins.Shared
     {
         public static HtmlNode CreateSnippet(HtmlNode article, string href, int snippetLength)
         {
-            HtmlNode snippet = HtmlNode.CreateNode("<div></div>");
+            HtmlNode snippet = HtmlNode.CreateNode("<article></article>");
             snippet.AppendChildren(article.ChildNodes);
             HtmlNode titleAnchorNode = HtmlNode.CreateNode($"<a href=\"/{href}\"></a>");
             HtmlNode titleNode = snippet.SelectSingleNode(".//h1");
