@@ -94,7 +94,8 @@ namespace JeremyTCD.DocFxPlugins.SearchIndex
                 {
                     RelPath = relPath,
                     SnippetHtml = snippet.OuterHtml,
-                    Text = text
+                    Text = text,
+                    Title = snippet.SelectSingleNode("./h1/a").InnerText
                 });
             }
 

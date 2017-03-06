@@ -11,6 +11,9 @@
         [JsonProperty("snippetHtml")]
         public string SnippetHtml { get; set; }
 
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
         [JsonProperty("text")]
         public string Text { get; set; }
 
