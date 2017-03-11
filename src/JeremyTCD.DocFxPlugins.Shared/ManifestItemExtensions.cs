@@ -36,7 +36,7 @@ namespace JeremyTCD.DocFxPlugins.Shared
             HtmlNode articleNode = manifestItem.
                 GetHtmlOutputDoc(outputFolder).
                 DocumentNode.
-                SelectSingleNode("//article[@class=\"main-article\"]");
+                SelectSingleNode("//article[@id=\"main-article\"]");
 
             if (articleNode == null)
             {
