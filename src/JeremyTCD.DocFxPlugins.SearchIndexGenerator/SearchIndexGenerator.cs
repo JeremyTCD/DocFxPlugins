@@ -12,7 +12,7 @@ using Microsoft.DocAsCode.MarkdownLite;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
-namespace JeremyTCD.DocFxPlugins.SearchIndex
+namespace JeremyTCD.DocFxPlugins.SearchIndexGenerator
 {
     [Export(nameof(SearchIndexGenerator), typeof(IPostProcessor))]
     public class SearchIndexGenerator : IPostProcessor

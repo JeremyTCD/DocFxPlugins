@@ -1,4 +1,4 @@
-﻿namespace JeremyTCD.DocFxPlugins.SearchIndex
+﻿namespace JeremyTCD.DocFxPlugins.SearchIndexGenerator
 {
     public static class SearchIndexConstants
     {

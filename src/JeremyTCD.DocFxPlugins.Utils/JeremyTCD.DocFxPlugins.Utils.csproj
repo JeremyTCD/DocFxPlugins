@@ -3,12 +3,23 @@
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <AssemblyName>JeremyTCD.DocFxPlugins.Utils</AssemblyName>
-    <PackageId>JeremyTCD.DocFxPlugins.Shared</PackageId>
+    <PackageId>JeremyTCD.DocFxPlugins.Utils</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <Version>0.1.0-beta</Version>
+    <Authors>JeremyTCD</Authors>
+    <Company></Company>
+    <PackageLicenseUrl>https://github.com/JeremyTCD/DocFxPlugins/blob/master/License.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/JeremyTCD/DocFxPlugins#utilities</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JeremyTCD/DocFxPlugins</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>DocFx Plugin Utilities</PackageTags>
+    <NeutralLanguage>English</NeutralLanguage>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

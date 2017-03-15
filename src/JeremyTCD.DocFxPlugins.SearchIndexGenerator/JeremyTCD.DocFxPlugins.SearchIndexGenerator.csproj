@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyTitle>JeremyTCD.DocFxPlugins.SearchIndex</AssemblyTitle>
+    <TargetFramework>net452</TargetFramework>
+    <AssemblyName>JeremyTCD.DocFxPlugins.SearchIndexGenerator</AssemblyName>
+    <PackageId>JeremyTCD.DocFxPlugins.SearchIndexGenerator</PackageId>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <Authors>JeremyTCD</Authors>
+    <Company />
+    <PackageLicenseUrl>https://github.com/JeremyTCD/DocFxPlugins/blob/master/License.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/JeremyTCD/DocFxPlugins#searchindexgenerator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JeremyTCD/DocFxPlugins</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>DocFx Plugin SearchIndex</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>A DocFx post-processor for search index generation. Search index generator enables granular control over the set of articles included in an index. Additionally, it facilitates pretty search results by including a html snippet from the beginning each article.</Description>
+    <Version>0.1.0-beta</Version>
+    <FileVersion>0.1.0.0</FileVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Composition" Version="1.0.27" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.2.0" />
+    <PackageReference Include="Microsoft.DocAsCode.Plugins" Version="2.12.1" />
+    <PackageReference Include="Microsoft.DocAsCode.Common" Version="2.12.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.4.9" />
+    <PackageReference Include="Microsoft.DocAsCode.Build.ConceptualDocuments" Version="2.12.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <Reference Include="System.Web" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JeremyTCD.DocFxPlugins.Utils\JeremyTCD.DocFxPlugins.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

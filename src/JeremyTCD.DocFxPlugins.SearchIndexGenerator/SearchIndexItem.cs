@@ -1,4 +1,4 @@
-﻿namespace JeremyTCD.DocFxPlugins.SearchIndex
+﻿namespace JeremyTCD.DocFxPlugins.SearchIndexGenerator
 {
     using HtmlAgilityPack;
     using Newtonsoft.Json;
