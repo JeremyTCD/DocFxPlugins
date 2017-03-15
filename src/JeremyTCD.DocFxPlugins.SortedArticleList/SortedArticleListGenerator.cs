@@ -9,12 +9,12 @@ using Microsoft.DocAsCode.Common;
 using HtmlAgilityPack;
 using System.Text;
 using System.Globalization;
-using JeremyTCD.DocFxPlugins.Shared;
+using JeremyTCD.DocFxPlugins.Utils;
 
 namespace JeremyTCD.DocFxPlugins.SortedArticleList
 {
-    [Export(nameof(SortedArticleListPostProcessor), typeof(IPostProcessor))]
-    public class SortedArticleListPostProcessor : IPostProcessor
+    [Export(nameof(SortedArticleListGenerator), typeof(IPostProcessor))]
+    public class SortedArticleListGenerator : IPostProcessor
     {
         private int SalSnippetLength;
 
@@ -78,7 +78,7 @@ namespace JeremyTCD.DocFxPlugins.SortedArticleList
                     SelectSingleNode($"//div[@id='{SortedArticleListConstants.SalAllItemsNodeId}']");
                 if (salWrapperNode == null)
                 {
-                    throw new InvalidDataException($"{nameof(SortedArticleListPostProcessor)}: Html output {relPath} has no sorted article list all-items node");
+                    throw new InvalidDataException($"{nameof(SortedArticleListGenerator)}: Html output {relPath} has no sorted article list all-items node");
 
                 }
                 salWrapperNode.AppendChildren(salItemsNode.ChildNodes);
@@ -112,7 +112,7 @@ namespace JeremyTCD.DocFxPlugins.SortedArticleList
                 }
                 catch
                 {
-                    throw new InvalidDataException($"{nameof(SortedArticleListPostProcessor)}: Article {manifestItem.SourceRelativePath} has an invalid {SortedArticleListConstants.DateKey}");
+                    throw new InvalidDataException($"{nameof(SortedArticleListGenerator)}: Article {manifestItem.SourceRelativePath} has an invalid {SortedArticleListConstants.DateKey}");
                 }
 
                 salItems.Add(new SortedArticleListItem

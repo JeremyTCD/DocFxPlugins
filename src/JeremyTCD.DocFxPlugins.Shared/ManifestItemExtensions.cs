@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace JeremyTCD.DocFxPlugins.Shared
+namespace JeremyTCD.DocFxPlugins.Utils
 {
     public static class ManifestItemExtensions
     {

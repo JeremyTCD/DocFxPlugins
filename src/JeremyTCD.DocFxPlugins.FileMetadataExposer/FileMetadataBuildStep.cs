@@ -4,14 +4,14 @@ using System.Composition;
 using System.Collections.Immutable;
 using Microsoft.DocAsCode.Build.ConceptualDocuments;
 
-namespace JeremyTCD.DocFxPlugins.Shared
+namespace JeremyTCD.DocFxPlugins.FileMetadataExposer
 {
     [Export(nameof(ConceptualDocumentProcessor), typeof(IDocumentBuildStep))]
-    public class FileMetadataBuildStep : IDocumentBuildStep
+    public class FileMetadataExposer : IDocumentBuildStep
     {
-        public int BuildOrder => 10;
+        public int BuildOrder => 1000;
 
-        public string Name => nameof(FileMetadataBuildStep);
+        public string Name => nameof(FileMetadataExposer);
 
         public void Build(FileModel model, IHostService host)
         {

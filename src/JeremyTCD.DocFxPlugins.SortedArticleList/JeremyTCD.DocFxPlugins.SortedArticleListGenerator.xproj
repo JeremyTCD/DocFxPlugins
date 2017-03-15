@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>7d404a53-339b-4a11-b6d0-0273367eb22f</ProjectGuid>
+    <ProjectGuid>ce5f4c5b-8083-4f09-b234-91777f6fa946</ProjectGuid>
     <RootNamespace>JeremyTCD.DocFxPlugins.ArticleList</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>

@@ -2,22 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Composition;
-using System.Linq;
 using System.Collections.Immutable;
 using System.IO;
 using Microsoft.DocAsCode.Common;
 using HtmlAgilityPack;
 using System.Text;
-using System.Globalization;
-using JeremyTCD.DocFxPlugins.Shared;
+using JeremyTCD.DocFxPlugins.Utils;
 using Microsoft.DocAsCode.MarkdownLite;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
 namespace JeremyTCD.DocFxPlugins.SearchIndex
 {
-    [Export(nameof(SearchIndexPostProcessor), typeof(IPostProcessor))]
-    public class SearchIndexPostProcessor : IPostProcessor
+    [Export(nameof(SearchIndexGenerator), typeof(IPostProcessor))]
+    public class SearchIndexGenerator : IPostProcessor
     {
         private static readonly Regex RegexWhiteSpace = new Regex(@"\s+", RegexOptions.Compiled);
         private int SearchIndexSnippetLength;
