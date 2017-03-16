@@ -10,7 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B9B3999E-84F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB56EA65-098E-4BA8-9AB4-48BAA319E0DC}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		License.txt = License.txt
 		NuGet.config = NuGet.config
+		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JeremyTCD.DocFxPlugins.FileMetadataExposer", "src\JeremyTCD.DocFxPlugins.FileMetadataExposer\JeremyTCD.DocFxPlugins.FileMetadataExposer.csproj", "{C68D0BA3-0450-4688-B7E4-553CF1EEE38D}"
